@@ -14,9 +14,11 @@
 
 <script>
   let count=0;
+  const tatsukiarray=["t","ta","tat","tats","tatsu","tatsuk","tatsuki","tatsuk","tatsu","tats","tat","ta","t"]
   setInterval(()=>{
-    count+=1;
-    const newcount=count%6;
-    document.title=newcount===1 && "t" || newcount===2 && "ta" || newcount===3 && "tat" || newcount===3 && "tats" || newcount===4 && "tatsu" || newcount===5 && "tatsuk" || newcount==6 && "tatsuki";
-    },2000) // yes i suck at coding at javascript ^
+    count++;
+    const newcount=count%(tatsukiarray.length-1);
+    document.title=tatsukiarray[newcount];
+    },2000)
+  // I suck at javascript.
 </script>
