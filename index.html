@@ -13,10 +13,10 @@
 </p>
 
 <script>
-  let count=0
-  setInterval(()=>
-    count+=1
-    const new=count%6
-    document.title=new===1 && "t" || new===2 && "ta" || new===3 && "tat" || new===3 && "tats" || new===4 && "tatsu" || new===5 && "tatsuk" || new==6 && "tatsuki"
+  let count=0;
+  setInterval(()=>{
+    count+=1;
+    const newcount=count%6;
+    document.title=newcount===1 && "t" || newcount===2 && "ta" || newcount===3 && "tat" || newcount===3 && "tats" || newcount===4 && "tatsu" || newcount===5 && "tatsuk" || newcount==6 && "tatsuki";
     },2000) // yes i suck at coding at javascript ^
 </script>
