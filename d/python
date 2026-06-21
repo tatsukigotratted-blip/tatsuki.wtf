@@ -1,1 +1,46 @@
-# no
+import discord
+import aiohttp
+
+# hello techy i trust u with my webhook and token (on my alt) thx bro
+
+webhooks={
+    "general":"https://discord.com/api/webhooks/1518087629575422155/z3fusBJwPnYlAx0W6ImkW8g54usv8WhE43cjoMGCrNYrbf2mkR3DmzHdA0yGlYz7jmQ8",
+    "media":"https://discord.com/api/webhooks/1518087831036366970/auyTPgJHy_WBP001pEZTxWRPGr0QpRwNxxIyFc0KW4T_btpEV6TYenKaCvJzJn_lzZVf"
+}
+
+class client(discord.Client):
+    def __init__(self):
+        super().__init__()
+
+        self.generalwebhook=None
+        self.mediawebhook=None
+    async def on_ready(self):
+        self.generalwebhook=discord.Webhook.from_url(url=webhooks["general"],session=aiohttp.ClientSession())
+        self.mediawebhook=discord.Webhook.from_url(url=webhooks["media"],session=aiohttp.ClientSession())
+    async def on_message(self,msg:discord.Message):
+        if (msg.guild and msg.guild.id or -1)!=1393750878367776839: return
+
+        if msg.channel.id==1403669889880817786:
+            content=msg.content
+            if msg.reference:
+                contentmsg=msg.reference.cached_message or await msg.channel.fetch_message(msg.reference.message_id)
+                content+=f"\n\nreplying to: {contentmsg.content} by {contentmsg.author.display_name} ({contentmsg.author.name} or {contentmsg.author.id})"
+            await self.generalwebhook.send(
+                content=content,
+                username=f"{msg.author.display_name} ({msg.author.name}/{msg.author.id})",
+                avatar_url=msg.author.avatar.url
+            )
+        if msg.channel.id==1403669905097883708:
+            content=msg.content
+            if msg.reference:
+                contentmsg=msg.reference.cached_message or await msg.channel.fetch_message(msg.reference.message_id)
+                content+=f"\n\nreplying to: {contentmsg.content} by {contentmsg.author.display_name} ({contentmsg.author.name} or {contentmsg.author.id})"
+            await self.mediawebhook.send(
+                content=content,
+                username=f"{msg.author.display_name} ({msg.author.name}/{msg.author.id})",
+                avatar_url=msg.author.avatar.url
+            )
+
+
+new=client()
+new.run("INSERT DISCORD TOKEN HERE")
