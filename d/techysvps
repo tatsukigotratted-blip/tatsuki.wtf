@@ -1,1 +1,67 @@
-print("summa")
+import discord
+import aiohttp
+
+webhooks={
+    "1367178191294435378":{ # botsl (i miss u steve 3: even though we're not friends anymore 3:)
+        "1391478905134649494":"https://discord.com/api/webhooks/1518252972352475136/uTseIgMWaCzeMC0Eqgbb904Bb-jqtTJVFPUDZA6bx6f1oifZPp485hiD4-WmMnZ0GI1L", # announcements
+        "1461655711095460026":"https://discord.com/api/webhooks/1518249949299609610/XPYX-SEvj_OhyU0RDgplnlNt-wcQ95IngvatbL449rMepMqHLFoqm2VvfDm649xrRWNW", # general
+        "1464625002098852063":"https://discord.com/api/webhooks/1518251023590883338/is4o7vZXcjklsJisNjFgCVYgmy6jdPg5LtE_4FLkMv6aoMAdY1av0Nfgyf3vR4-mPENm", # media
+    },
+    #"1393750878367776839":{ # mist
+    #    "1403669889880817786":"https://discord.com/api/webhooks/1518087629575422155/z3fusBJwPnYlAx0W6ImkW8g54usv8WhE43cjoMGCrNYrbf2mkR3DmzHdA0yGlYz7jmQ8", # general
+    #    "1403669905097883708":"https://discord.com/api/webhooks/1518087831036366970/auyTPgJHy_WBP001pEZTxWRPGr0QpRwNxxIyFc0KW4T_btpEV6TYenKaCvJzJn_lzZVf" # media
+    #} i turned it into comments cuz i got banned
+}
+
+class client(discord.Client):
+    def __init__(self):
+        super().__init__()
+
+        self.tatsuki:discord.User=None
+    async def on_ready(self):
+        self.tatsuki=await self.fetch_user(1021770239043715102)
+
+        for _,guild in webhooks.items():
+            for i,v in guild.items():
+                guild[i]=discord.Webhook.from_url(url=v,session=aiohttp.ClientSession())
+    async def on_message(self,msg:discord.Message):
+        if str(msg.guild.id) not in webhooks: return
+        if str(msg.channel.id) not in webhooks[str(msg.guild.id)]:
+            if msg.channel.id!=1463497539557916672: return
+        
+        if msg.channel.id==1463497539557916672:
+            words=msg.content.split(" ")
+            if "joined" in words:
+                if "HollowGol" in words or "STEVETheReal916" in words: # pala, steve
+                    self.tatsuki.send(f"{self.tatsuki.mention}{self.tatsuki.mention} someone important (SFOTHO) just joined!")
+            return
+
+        hook:discord.Webhook=webhooks[str(msg.guild.id)][str(msg.channel.id)]
+
+        ref=msg.reference and (msg.reference.cached_message or await msg.channel.fetch_message(msg.reference.message_id))
+        webhookref:discord.WebhookMessage=None
+        if ref:
+            channel=(await self.fetch_webhook(hook.id)).channel
+            async for v in channel.history():
+                content=v.content[0:len(v.content)-(11+len(str(msg.id)))]
+                if content[0:7]=="[reply]":
+                    content=content[9+len(f"https://discord.com/channels/{v.guild.id}/{v.channel.id}/{v.id}")]
+                print(content)
+                if content==ref.content:
+                    webhookref=v
+        msglink=webhookref and f"https://discord.com/channels/{webhookref.guild.id}/{webhookref.channel.id}/{webhookref.id}"
+
+        user=f"{msg.author.display_name} | @{msg.author.name}"
+        content=f"{webhookref and f'[reply]({msglink})\n' or ""}{msg.content}"
+
+        user=len(user)<80 and user or user[0:80]
+        content=len(content)<2000 and content or content[0:1900]
+        content+=f"\n`msg id: {msg.id}`"
+        await hook.send(
+            content=content,
+            username=f"{msg.author.display_name} | @{msg.author.name}",
+            avatar_url=msg.author.display_avatar.url
+        )
+
+bot=client()
+bot.run(env["secrets"]["discord_logger"]) # type: ignore
