@@ -63,4 +63,4 @@ class client(discord.Client):
         )
 
 bot=client()
-bot.run(env["secrets"]["discord_logger"]) # type: ignore
+bot.run(env["secrets"]["discord_logger"])
