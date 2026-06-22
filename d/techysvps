@@ -28,4 +28,4 @@ class B(A.Client):
 		N=D and f"https://discord.com/channels/{D.guild.id}/{D.channel.id}/{D.id}";I=f"{A.author.display_name} | @{A.author.name}";B=f"{D and f"""[reply]({N})
 """or""}{A.content}";I=F(I)<80 and I or I[0:80];B=F(B)<2000 and B or B[0:1900];B+=f"\n`msg id: {A.id}`";await K.send(content=B,username=f"{A.author.display_name} | @{A.author.name}",avatar_url=A.author.display_avatar.url)
 E=B()
-E.run(env['secrets']['discord_logger'])
+E.run(secrets['discord_logger'])
