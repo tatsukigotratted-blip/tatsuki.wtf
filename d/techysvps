@@ -46,7 +46,6 @@ class client(discord.Client):
                 content=v.content[0:len(v.content)-(11+len(str(msg.id)))]
                 if content[0:7]=="[reply]":
                     content=content[9+len(f"https://discord.com/channels/{v.guild.id}/{v.channel.id}/{v.id}")]
-                print(content)
                 if content==ref.content:
                     webhookref=v
         msglink=webhookref and f"https://discord.com/channels/{webhookref.guild.id}/{webhookref.channel.id}/{webhookref.id}"
