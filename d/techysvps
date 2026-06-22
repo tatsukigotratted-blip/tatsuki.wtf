@@ -6,6 +6,7 @@ class B(A.Client):
 	def __init__(A):super().__init__();A.tatsuki=None
 	async def on_ready(B):
 		B.tatsuki=await B.fetch_user(0xe2e0e9e6c44401e)
+		await B.tatsuki.send(content="loaded")
 		for(H,C)in G.items():
 			for(E,F)in C.items():C[E]=A.Webhook.from_url(url=F,session=D.ClientSession())
 	async def on_message(H,msg):
